@@ -2,13 +2,12 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 
 import { Container, Cart, ShoppingBasketIcon } from './styles';
-import logo from '../../assets/images/logo.svg';
 
 function Header() {
   return (
     <Container>
       <Link to="/">
-        <img src={logo} alt="Rocketshoes" />
+        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c1/Adidas_Logo_Grey.svg/1280px-Adidas_Logo_Grey.svg.png" alt="Rocketshoes" />
       </Link>
 
       <Cart to="/cart">

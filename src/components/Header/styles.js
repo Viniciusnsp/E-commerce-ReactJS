@@ -7,6 +7,10 @@ export const Container = styled.header`
   justify-content: space-between;
   align-items: center;
   margin: 50px 0;
+
+   img {
+    width: 150px;
+  }
 `;
 
 export const ShoppingBasketIcon = styled(MdShoppingBasket)`
