@@ -1,104 +1,68 @@
-import React from 'react';
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import api from '../../services/api';
+import { bindActionCreators } from 'redux';
+import * as CartActions from '../../store/modules/cart/actions';
 
+import { formatPrice } from '../../util/format';
 import { ProductList } from './styles';
-import shoes1 from '../../assets/images/tenis/adidas.png';
 
-function Home() {
-  return (
-    <ProductList>
-      <li className="card">
-        <div className="sneaker">
-          <div className="circle"></div>
-          <img src={shoes1} alt="Tênis Adidas" />
-        </div>
-        <div className="info">
-          <strong>Adidas ZX</strong>
-          <h3>Future-ready trainers wrapped boost for exception comfort.</h3>
-          <span>R$ 129,90</span>
-        </div>
-        <button type='button'>
-          <span>COMPRAR</span>
-        </button>
-      </li>
+class Home extends Component {
+  state = {
+    products: [],
+  };
 
-      <li>
-        <div className="sneaker">
-          <div className="circle"></div>
-          <img src={shoes1} alt="Adidas ZX" />
-        </div>
-        <div className="info">
-          <strong>Adidas ZX</strong>
-          <h3>Future-ready trainers wrapped boost for exception comfort.</h3>
-          <span>R$ 129,90</span>
-        </div>
-        <button type='button'>
-          <span>COMPRAR</span>
-        </button>
-      </li>
+  async componentDidMount() {
+    const response = await api.get('products');
 
-      <li>
-        <div className="sneaker">
-          <div className="circle"></div>
-          <img src={shoes1} alt="Adidas ZX" />
-        </div>
-        <div className="info">
-          <strong>Adidas ZX</strong>
-          <h3>Future-ready trainers wrapped boost for exception comfort.</h3>
-          <span>R$ 129,90</span>
-        </div>
-        <button type='button'>
-          <span>COMPRAR</span>
-        </button>
-      </li>
+    const data = response.data.map(product => ({
+      ...product,
+      priceFormatted: formatPrice(product.price),
+    }))
 
-      <li>
-        <div className="sneaker">
-          <div className="circle"></div>
-          <img src={shoes1} alt="Adidas ZX" />
-        </div>
-        <div className="info">
-          <strong>Adidas ZX</strong>
-          <h3>Future-ready trainers wrapped boost for exception comfort.</h3>
-          <span>R$ 129,90</span>
-        </div>
-        <button type='button'>
-          <span>COMPRAR</span>
-        </button>
-      </li>
+    this.setState({ products: data })
 
-      <li>
-        <div className="sneaker">
-          <div className="circle"></div>
-          <img src={shoes1} alt="Adidas ZX" />
-        </div>
-        <div className="info">
-          <strong>Adidas ZX</strong>
-          <h3>Future-ready trainers wrapped boost for exception comfort.</h3>
-          <span>R$ 129,90</span>
-        </div>
-        <button type='button'>
-          <span>COMPRAR</span>
-        </button>
-      </li>
-      
-      <li>
-        <div className="sneaker">
-          <div className="circle"></div>
-          <img src={shoes1} alt="Adidas ZX" />
-        </div>
-        <div className="info">
-          <strong>Adidas ZX</strong>
-          <h3>Future-ready trainers wrapped boost for exception comfort.</h3>
-          <span>R$ 129,90</span>
-        </div>
-        <button type='button'>
-          <span>COMPRAR</span>
-        </button>
-      </li>
+    console.log(data);
+  }
 
-      
-    </ProductList>
-  );
+  handleAddProduct = id => {
+    const { addToCartRequest } = this.props;
+
+    addToCartRequest(id);
+  };
+
+  render() {
+    const { products } = this.state;
+
+    return (
+      <ProductList>
+        { products.map(product => (
+           <li className="card" key={product.id}>
+           <div className="sneaker">
+             <div className="circle"></div>
+             <img src={product.image} alt={product.title} />
+           </div>
+           <div className="info">
+             <strong>Adidas ZX</strong>
+             <h3>{product.title}</h3>
+           </div>
+           <div className="price">
+              <span>{product.priceFormatted}</span>
+            </div>
+           <button type='button' onClick={() => this.handleAddProduct(product.id)}>
+             <span>COMPRAR</span>
+           </button>
+         </li>
+        ))}
+       
+  
+      </ProductList>
+    );
+  }
 }
 
-export default Home;
+const mapDispatchToProps = dispatch => 
+  bindActionCreators(CartActions, dispatch);
+
+
+export default connect(null, mapDispatchToProps)(Home);

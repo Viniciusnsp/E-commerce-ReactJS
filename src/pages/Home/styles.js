@@ -53,6 +53,7 @@ export const ProductList = styled.ul`
     .info {
         margin-top: 20px;
         margin-bottom: 20px;
+        height: 80px;
 
       > strong {
         font-size: 24px;
@@ -67,11 +68,16 @@ export const ProductList = styled.ul`
         color: #585858;
         text-transform: uppercase;
       }
-
-      > span {
-        font-size: 16px;
-        font-weight: lighter;
-        color: #585858;
+    }
+    .price {
+        display: flex;
+        justify-content: baseline;
+        margin-bottom: 20px;
+        
+        span {
+          font-size: 16px;
+          font-weight: lighter;
+          color: #585858;
       }
     }
 
